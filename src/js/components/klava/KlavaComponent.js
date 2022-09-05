@@ -3,6 +3,7 @@ import { toggleStartStop } from '../../core/speechRecognitionAPI';
 import { KeyBoardStateComponent } from '../../core/state/KeyBoardStateComponent';
 import * as actions from '../../redux/actions';
 import { ModalWindow } from '../modal.window.js/ModalWindow';
+import { cursorPositionAndTextarea } from '../monitor/monitor.functions';
 
 import {
   animationPressKey,
@@ -55,9 +56,12 @@ export class KlavaComponent extends KeyBoardStateComponent {
   }
 
   onClick(event) {
+    this.addToLS({ setSelectionEnd: cursorPositionAndTextarea().currentCursorPos })
     animationPressKey(event)
     playSound(event, this.store)
-    if (this.store.getState().lastInputWasThroughKeydown) {
+
+    const wasLastPressedKeydown = this.store.getState().lastInputWasThroughKeydown
+    if (wasLastPressedKeydown) {
       const Lang = this.store.getState().Lang === 'ru' ? { Lang: 'en' } : { Lang: 'ru' }
       this.addToLS(Lang)
       this.addToLS({ lastInputWasThroughKeydown: false })
@@ -122,6 +126,9 @@ export class KlavaComponent extends KeyBoardStateComponent {
 
     if (isKeyUnwritable === 'ArrowLeft') {
       this.$emit('klava:ArrowLeftIsOn')
+    }
+    if (isKeyUnwritable === 'ArrowRight') {
+      this.$emit('klava:ArrowRightIsOn')
     }
   }
 }

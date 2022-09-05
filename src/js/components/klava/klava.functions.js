@@ -11,6 +11,7 @@ import { keysChangerList } from './klavaKeys'
 
 // import animation from '../../../assets/img/animation.svg'
 import { $ } from '../../core/dom'
+import { cursorPositionAndTextarea } from '../monitor/monitor.functions'
 
 export function standartKeyTemplate(value, attribute) {
   const LocStorage = storage('keyBoard-state') || {}
@@ -139,10 +140,14 @@ export function fireCapsLangShift(keyIsCapsOrLangOrShift) {
 }
 
 export function fireBackspace() {
-  const LocStorage = storage('keyBoard-state')
-  const { Textarea } = LocStorage
-  const newValue = Textarea.slice(0, -1)
-  return { Textarea: newValue }
+  const values = cursorPositionAndTextarea()
+  const newValue = values.currentTextarea.value.slice(0, values.currentCursorPos - 1)
+    + values.currentTextarea.value.slice(values.currentCursorPos)
+
+  return {
+    Textarea: newValue,
+    setSelectionEnd: values.currentCursorPos,
+  }
 }
 
 export function animationPressKey(event) {
@@ -171,13 +176,13 @@ export function animationPressKey(event) {
     $key.append(keyTextValue)
     setTimeout(() => {
       $animationHTML.remove()
-    }, 100)
+    }, 300)
   } else if (pressedKey.functional) {
     const key = event.target
     key.insertAdjacentHTML('beforeend', animationCircle)
     setTimeout(() => {
       key.removeChild(key.lastChild.previousSibling)
-    }, 100)
+    }, 300)
   }
 }
 

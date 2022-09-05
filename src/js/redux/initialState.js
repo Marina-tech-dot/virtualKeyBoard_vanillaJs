@@ -7,6 +7,7 @@ const defaultState = {
   Shift: false,
   Textarea: '',
   Microphone: false,
+  setSelectionEnd: '',
 }
 
 export const initialState = storage('keyBoard-state') ? storage('keyBoard-state') : defaultState

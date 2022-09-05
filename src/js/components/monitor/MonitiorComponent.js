@@ -1,13 +1,22 @@
+/* eslint-disable no-unused-vars */
 import { KeyBoardComponent } from '../../core/KeyBoardComponent';
 import { createMonitor } from './monitorComponent.template';
 import * as actions from '../../redux/actions';
 import { $ } from '../../core/dom';
-import { lightPressedKey, setCaretToPos } from './monitor.functions';
+import {
+  addClickedKey, cursorPositionAndTextarea, lightPressedKey, setCaretToPos,
+} from './monitor.functions';
 import { fireCapsLangShift, itIsLang } from '../klava/klava.functions';
-import { indicatePressedCapsLock } from '../klava/klava.functions.utils';
+import { functionalKeyValue, indicatePressedCapsLock } from '../klava/klava.functions.utils';
+import { windowParametrs } from '../../core/utils';
 
 export class MonitorComponent extends KeyBoardComponent {
   static className = 'key-bord__monic'
+
+  static initialStyle = {
+    widht: windowParametrs().monicWidth,
+    height: windowParametrs().monicHeight,
+  }
 
   constructor($root, options) {
     super($root, {
@@ -26,7 +35,8 @@ export class MonitorComponent extends KeyBoardComponent {
 
     this.$on('klava:clickSimbol', (text) => {
       this.textarea.focus()
-      this.pressedWrittenKey(text, this.textarea)
+      this.pressedWrittenKey(text)
+      this.textarea.focus()
     })
     this.$on('klava:clickUnwrittenSimbol', () => {
       this.textarea.focus()
@@ -38,15 +48,12 @@ export class MonitorComponent extends KeyBoardComponent {
     })
     this.$on('klava:clickBackspace', (newTextarea) => {
       this.textarea.focus()
-      this.addToLS(newTextarea)
+      this.addToLS({ Textarea: newTextarea.Textarea })
       this.textarea.value = this.store.getState().Textarea
+      this.textarea.selectionEnd = newTextarea.setSelectionEnd - 1
     })
     this.$on('monic:wasKeydown', (currentTextarea) => {
       this.addToLS({ Textarea: currentTextarea })
-    })
-    this.$on('monic:clickTabKey', () => {
-      this.addToLS({ Textarea: `${this.store.getState().Textarea}\t` })
-      this.textarea.value = this.store.getState().Textarea
     })
     this.$on('monic:pressedKey', () => {
       document.addEventListener('keydown', (e) => {
@@ -70,6 +77,12 @@ export class MonitorComponent extends KeyBoardComponent {
       this.textarea.focus()
       const currentPos = this.textarea.selectionStart
       setCaretToPos(this.textarea, currentPos - 1)
+      this.addToLS({ setSelectionEnd: currentPos - 1 })
+    })
+    this.$on('klava:ArrowRightIsOn', () => {
+      this.textarea.focus()
+      const currentPos = this.textarea.selectionStart
+      setCaretToPos(this.textarea, currentPos + 1)
     })
   }
 
@@ -83,10 +96,14 @@ export class MonitorComponent extends KeyBoardComponent {
     }))
   }
 
-  pressedWrittenKey(text, textarea) {
-    const writtenText = this.store.getState().Textarea + text
-    this.addToLS({ Textarea: writtenText })
-    textarea.value = this.store.getState().Textarea
+  pressedWrittenKey(text) {
+    const newTextareaAndCursorposition = addClickedKey(this.store, text)
+    console.log(newTextareaAndCursorposition.Textarea);
+    this.addToLS({ Textarea: newTextareaAndCursorposition.Textarea })
+    this.addToLS({ setSelectionEnd: newTextareaAndCursorposition.setSelectionEnd })
+    this.textarea.value = this.store.getState().Textarea
+    this.textarea.selectionEnd = this.store.getState().setSelectionEnd + 1
+    this.addToLS({ setSelectionEnd: newTextareaAndCursorposition.setSelectionEnd + 1 })
   }
 
   onClick(event) {
@@ -106,7 +123,7 @@ export class MonitorComponent extends KeyBoardComponent {
       event.preventDefault()
       document.onkeyup = () => {
         document.onkeyup = null
-        this.$emit('monic:clickTabKey')
+        this.$emit('klava:clickSimbol', functionalKeyValue('Tab'))
       }
     }
     lightPressedKey(event)
@@ -117,6 +134,8 @@ export class MonitorComponent extends KeyBoardComponent {
       itIsLang(this.store)
       fireCapsLangShift('Lang')
     }
+
+    this.addToLS({ setSelectionEnd: cursorPositionAndTextarea().currentCursorPos })
   }
 
   onKeyup() {

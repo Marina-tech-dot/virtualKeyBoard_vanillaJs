@@ -64,3 +64,34 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
 export function setCaretToPos(input, pos) {
   setSelectionRange(input, pos, pos);
 }
+
+export function addClickedKey(store, simbol) {
+  let newTextareaValue
+
+  if (store.getState().setSelectionEnd) {
+    const currentCursorPos = store.getState().setSelectionEnd
+    newTextareaValue = cursorPositionAndTextarea().currentTextarea.value.slice(0, currentCursorPos)
+      + simbol
+      + cursorPositionAndTextarea().currentTextarea.value.slice(currentCursorPos)
+    console.log(currentCursorPos);
+    return {
+      Textarea: newTextareaValue,
+      setSelectionEnd: currentCursorPos,
+    }
+  }
+
+  const currentCursorPos = cursorPositionAndTextarea().currentTextarea.selectionStart
+  newTextareaValue = cursorPositionAndTextarea().currentTextarea.value + simbol
+  return {
+    Textarea: newTextareaValue,
+    setSelectionEnd: currentCursorPos,
+  }
+}
+
+export function cursorPositionAndTextarea() {
+  const currentTextarea = document.querySelector('#written')
+  return {
+    currentTextarea,
+    currentCursorPos: currentTextarea.selectionStart,
+  }
+}

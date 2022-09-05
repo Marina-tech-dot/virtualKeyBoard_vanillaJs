@@ -1,26 +1,65 @@
 export function windowParametrs() {
+  let monicWidth
+  let monicHeight
+  let textareaWidth
+  let textareaHeight
+
   if (window.innerWidth >= 920) {
-    return {
-      monicWidth: '860px',
-      monicHeight: '368px',
-      textareaWidth: '830px',
-      textareaHeight: '277px',
-    }
-  } if (window.innerWidth < 920 && window.innerWidth >= 720) {
-    return {
-      monicWidth: '688px',
-      monicHeight: '368px',
-      textareaWidth: '660px',
-      textareaHeight: '277px',
-    }
+    monicWidth = '860px'
+    textareaWidth = '830px'
   }
+
+  if (window.innerWidth < 920 && window.innerWidth >= 720) {
+    monicWidth = '688px'
+    textareaWidth = '660px'
+  }
+
+  if (window.innerWidth < 720) {
+    monicWidth = '452px'
+    textareaWidth = '425px'
+  }
+
+  if (window.innerHeight >= 800) {
+    monicHeight = '368px'
+    textareaHeight = '277px'
+  }
+
+  if (window.innerHeight < 800) {
+    monicHeight = '230px'
+    textareaHeight = '130px'
+  }
+
   return {
-    monicWidth: '452px',
-    monicHeight: '368px',
-    textareaWidth: '425px',
-    textareaHeight: '277px',
+    monicWidth,
+    monicHeight,
+    textareaWidth,
+    textareaHeight,
   }
 }
+
+// export function windowParametrs() {
+//   if (window.innerWidth >= 920) {
+//     return {
+//       monicWidth: '860px',
+//       monicHeight: '368px',
+//       textareaWidth: '830px',
+//       textareaHeight: '277px',
+//     }
+//   } if (window.innerWidth < 920 && window.innerWidth >= 720) {
+//     return {
+//       monicWidth: '688px',
+//       monicHeight: '368px',
+//       textareaWidth: '660px',
+//       textareaHeight: '277px',
+//     }
+//   }
+//   return {
+//     monicWidth: '452px',
+//     monicHeight: '368px',
+//     textareaWidth: '425px',
+//     textareaHeight: '277px',
+//   }
+// }
 
 export function css(styles = {}) {
   const cssStylesString = Object.entries(styles).map(([key, value]) => `${key}:${value}`).join(';')

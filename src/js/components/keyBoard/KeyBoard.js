@@ -19,6 +19,7 @@ export class KeyBoard {
     }
     this.components = this.components.map((Component) => {
       const $el = $.create('div', Component.className)
+      $el.css(Component.initialStyle)
       $el.addClass(Component.additionalClasses)
       const component = new Component($el, componentOptions)
       $el.html(component.toHTML())
