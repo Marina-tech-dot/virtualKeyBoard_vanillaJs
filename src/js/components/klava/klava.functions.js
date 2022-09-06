@@ -90,11 +90,13 @@ export function fireCapsLangShift(keyIsCapsOrLangOrShift) {
       const { Lang } = LocStorage
       if (!CapsLock) {
         if (keysChangerList[Lang][writtenSimbol].toUpperCase()) {
-          el.textContent = keysChangerList[Lang][writtenSimbol].toUpperCase()
+          const textContent = keysChangerList[Lang][writtenSimbol].toUpperCase()
+          el.textContent = textContent
         }
       }
       if (CapsLock) {
-        el.textContent = keysChangerList[Lang][writtenSimbol]
+        const textContent = keysChangerList[Lang][writtenSimbol]
+        el.textContent = textContent
       }
       return false
     }
@@ -106,19 +108,23 @@ export function fireCapsLangShift(keyIsCapsOrLangOrShift) {
 
       if (keysChangerList.simbols[writtenSimbol]) {
         if (!Shift) {
-          el.textContent = keysChangerList.simbols[writtenSimbol]
+          const textContent = keysChangerList.simbols[writtenSimbol]
+          el.textContent = textContent
         }
         if (Shift) {
-          el.textContent = keysChangerList.numbers[writtenSimbol]
+          const textContent = keysChangerList.numbers[writtenSimbol]
+          el.textContent = textContent
         }
       }
       if (keysChangerList.en[writtenSimbol] && !keysChangerList.simbols[writtenSimbol]) {
         if (!Shift) {
-          el.textContent = keysChangerList[Lang][writtenSimbol].toUpperCase()
+          const textContent = keysChangerList[Lang][writtenSimbol].toUpperCase()
+          el.textContent = textContent
         }
         if (Shift) {
           if (!CapsLock) {
-            el.textContent = keysChangerList[Lang][writtenSimbol]
+            const textContent = keysChangerList[Lang][writtenSimbol]
+            el.textContent = textContent
           }
         }
       }
@@ -130,10 +136,12 @@ export function fireCapsLangShift(keyIsCapsOrLangOrShift) {
       const currentLang = Lang === 'ru' ? 'en' : 'ru'
       if (CapsLock) {
         if (keysChangerList[currentLang][writtenSimbol].toUpperCase()) {
-          el.textContent = keysChangerList[currentLang][writtenSimbol].toUpperCase()
+          const textContent = keysChangerList[currentLang][writtenSimbol].toUpperCase()
+          el.textContent = textContent
         }
       } else {
-        el.textContent = keysChangerList[currentLang][writtenSimbol]
+        const textContent = keysChangerList[currentLang][writtenSimbol]
+        el.textContent = textContent
       }
     }
   })
@@ -172,17 +180,18 @@ export function animationPressKey(event) {
   if (pressedKey.write) {
     const keyTextValue = $(event.target).innerText()
     const $key = $(event.target).html(animationCircle)
-    const $animationHTML = $key.children(0, $key)
     $key.append(keyTextValue)
+    const $animationHTML = $key.children(0, $key)
+    // $key.append(keyTextValue)
     setTimeout(() => {
       $animationHTML.remove()
-    }, 300)
+    }, 250)
   } else if (pressedKey.functional) {
     const key = event.target
     key.insertAdjacentHTML('beforeend', animationCircle)
     setTimeout(() => {
       key.removeChild(key.lastChild.previousSibling)
-    }, 300)
+    }, 250)
   }
 }
 

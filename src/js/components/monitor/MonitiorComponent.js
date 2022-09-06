@@ -41,10 +41,6 @@ export class MonitorComponent extends KeyBoardComponent {
     this.$on('klava:clickUnwrittenSimbol', () => {
       this.textarea.focus()
       this.textarea.scrollTop = this.textarea.scrollHeight
-      console.log('B');
-      // TODO WAYYYYYY
-      // console.log(this.textarea.selectionStart);
-      // this.textarea.setEndPoint(this.textarea.selectionStart - 1)
     })
     this.$on('klava:clickBackspace', (newTextarea) => {
       this.textarea.focus()
@@ -98,10 +94,9 @@ export class MonitorComponent extends KeyBoardComponent {
 
   pressedWrittenKey(text) {
     const newTextareaAndCursorposition = addClickedKey(this.store, text)
-    console.log(newTextareaAndCursorposition.Textarea);
     this.addToLS({ Textarea: newTextareaAndCursorposition.Textarea })
     this.addToLS({ setSelectionEnd: newTextareaAndCursorposition.setSelectionEnd })
-    this.textarea.value = this.store.getState().Textarea
+    this.textarea.value += text
     this.textarea.selectionEnd = this.store.getState().setSelectionEnd + 1
     this.addToLS({ setSelectionEnd: newTextareaAndCursorposition.setSelectionEnd + 1 })
   }

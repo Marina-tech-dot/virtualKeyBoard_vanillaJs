@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { $ } from '../../core/dom';
 import { toggleStartStop } from '../../core/speechRecognitionAPI';
 import { KeyBoardStateComponent } from '../../core/state/KeyBoardStateComponent';
@@ -56,9 +57,8 @@ export class KlavaComponent extends KeyBoardStateComponent {
   }
 
   onClick(event) {
+    event.preventDefault()
     this.addToLS({ setSelectionEnd: cursorPositionAndTextarea().currentCursorPos })
-    animationPressKey(event)
-    playSound(event, this.store)
 
     const wasLastPressedKeydown = this.store.getState().lastInputWasThroughKeydown
     if (wasLastPressedKeydown) {
@@ -99,36 +99,26 @@ export class KlavaComponent extends KeyBoardStateComponent {
       this.addToLS(newStateValue)
     }
     if (isKeyUnwritable === 'Microphone') {
-      this.addToLS(
-        { Microphone: !this.store.getState().Microphone },
-      )
-      toggleClassActive('#microphone', 'Microphone', this.store)
-      toggleStartStop()
+      // распознаватель голоса не доделан: не получается менять состяние локал сторэдж.
 
-      const options = {
-        title: 'Your speech is turning into the text right now',
-        closable: true,
-        content: 'Press microphone again to stop it.',
-        width: '350px',
-      }
-      const modal = new ModalWindow(options)
-      if (!this.store.getState().Microphone) {
-        modal.open()
-        setTimeout(() => {
-          modal.destroy()
-        }, 5000)
-      }
-
-      setTimeout(() => {
-        this.$emit('klava:microIsOn')
-      }, 500)
+      // this.addToLS(
+      //   { Microphone: !this.store.getState().Microphone },
+      // )
+      // toggleClassActive('#microphone', 'Microphone', this.store)
+      // toggleStartStop()
+      // this.$emit('klava:microIsOn')
     }
 
     if (isKeyUnwritable === 'ArrowLeft') {
+      event.preventDefault()
       this.$emit('klava:ArrowLeftIsOn')
     }
     if (isKeyUnwritable === 'ArrowRight') {
+      event.preventDefault()
       this.$emit('klava:ArrowRightIsOn')
     }
+
+    animationPressKey(event)
+    playSound(event, this.store)
   }
 }

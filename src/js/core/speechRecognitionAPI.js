@@ -1,17 +1,18 @@
-let recognizing;
-window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+let recognizing
+window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition
 const recognition = new window.SpeechRecognition();
-recognition.continuous = true;
-reset();
+recognition.continuous = true
+reset()
 recognition.onend = () => {
-  console.log('!', JSON.parse(localStorage['keyBoard-state']).Microphone)
+  // JSON.parse(localStorage['keyBoard-state']).Microphone = true
+  // console.log();
 }
 
 recognition.onresult = function (event) {
   const el = document.querySelector('#written')
   for (let i = event.resultIndex; i < event.results.length; ++i) {
     if (event.results[i].isFinal) {
-      el.value += event.results[i][0].transcript;
+      el.value += event.results[i][0].transcript
     }
   }
 }
@@ -22,10 +23,11 @@ function reset() {
 
 export function toggleStartStop() {
   if (recognizing) {
-    recognition.stop();
-    reset();
+    recognition.stop()
+    reset()
   } else {
-    recognition.start();
-    recognizing = true;
+    JSON.parse(localStorage['keyBoard-state']).Microphone = true
+    recognition.start()
+    recognizing = true
   }
 }
