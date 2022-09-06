@@ -96,7 +96,7 @@ export class MonitorComponent extends KeyBoardComponent {
     const newTextareaAndCursorposition = addClickedKey(this.store, text)
     this.addToLS({ Textarea: newTextareaAndCursorposition.Textarea })
     this.addToLS({ setSelectionEnd: newTextareaAndCursorposition.setSelectionEnd })
-    this.textarea.value += text
+    this.textarea.value = this.store.getState().Textarea
     this.textarea.selectionEnd = this.store.getState().setSelectionEnd + 1
     this.addToLS({ setSelectionEnd: newTextareaAndCursorposition.setSelectionEnd + 1 })
   }
