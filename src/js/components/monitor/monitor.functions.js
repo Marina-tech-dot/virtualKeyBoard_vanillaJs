@@ -73,7 +73,6 @@ export function addClickedKey(store, simbol) {
     newTextareaValue = cursorPositionAndTextarea().currentTextarea.value.slice(0, currentCursorPos)
       + simbol
       + cursorPositionAndTextarea().currentTextarea.value.slice(currentCursorPos)
-    console.log(currentCursorPos);
     return {
       Textarea: newTextareaValue,
       setSelectionEnd: currentCursorPos,

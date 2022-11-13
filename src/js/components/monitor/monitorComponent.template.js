@@ -10,6 +10,9 @@ export function createMonitor() {
       <div class="monic__inner-screen">
         <div class="monic__screen" id="monic">
           <textarea class="key-bord__text" id="written" style="${styles}"></textarea>
+          <div class="interim">
+            <p class="interim__result"></p>
+          </div>
         </div>
       </div>
       <div class="monic__panel">
@@ -17,5 +20,5 @@ export function createMonitor() {
           <p class="_icon-keyboard" data-clava=true></p>
         </div>
       </div>
-    `
+    `;
 }

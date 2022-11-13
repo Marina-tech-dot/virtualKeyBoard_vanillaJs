@@ -1,6 +1,4 @@
 import '../scss/style.scss';
-// eslint-disable-next-line no-unused-vars
-import html from '../index.html';
 import { KeyBoard } from './components/keyBoard/KeyBoard';
 import { MonitorComponent } from './components/monitor/MonitiorComponent';
 import { KlavaComponent } from './components/klava/KlavaComponent';

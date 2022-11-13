@@ -8,8 +8,6 @@ import {
   soundSRC, toggleClassActive, toggleLangBTN,
 } from './klava.functions.utils'
 import { keysChangerList } from './klavaKeys'
-
-// import animation from '../../../assets/img/animation.svg'
 import { $ } from '../../core/dom'
 import { cursorPositionAndTextarea } from '../monitor/monitor.functions'
 
@@ -54,7 +52,7 @@ export function itIsCaps(store) {
 export function itIsLang(store, isItInitialState) {
   const storeKeys = store.getState()
   let { Lang } = storeKeys
-  console.log(Lang);
+
   if (isItInitialState) {
     Lang = Lang === 'en' ? 'ru' : 'en'
   }
@@ -71,7 +69,16 @@ export function playSound(event, store) {
   if (!store.Sound) return
 
   const audio = document.createElement('audio');
-  const key = event.target.dataset.write ? 'WrittenKey' : event.target.dataset.functional
+
+  let key
+  if (event.target.dataset.write || event.target.dataset.functional) {
+    key = event.target.dataset.write
+      ? 'WrittenKey'
+      : event.target.dataset.functional;
+  } else {
+    key = soundListTitles.includes(event.key) ? event.key
+      : event.key === ' ' ? 'Space' : 'WrittenKey';
+  }
 
   audio.src = `${soundSRC(soundListWithTitles, key)}`
   audio.play()
@@ -182,7 +189,6 @@ export function animationPressKey(event) {
     const $key = $(event.target).html(animationCircle)
     $key.append(keyTextValue)
     const $animationHTML = $key.children(0, $key)
-    // $key.append(keyTextValue)
     setTimeout(() => {
       $animationHTML.remove()
     }, 250)

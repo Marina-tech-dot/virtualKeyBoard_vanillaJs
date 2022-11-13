@@ -27,10 +27,3 @@ export class Emitter {
     }
   }
 }
-
-// example
-// const emitter = new Emitter()
-// const unsubscribe = emitter.subscribe('vladilen', (data) => console.log('Sub', data))
-// emitter.subscribe('vladilen', (data) => console.log('Sub', data))
-// unsubscribe()
-// emitter.emit('vladilen', 42)

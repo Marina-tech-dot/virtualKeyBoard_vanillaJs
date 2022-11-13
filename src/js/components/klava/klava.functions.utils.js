@@ -35,6 +35,16 @@ export function toggleClassActive(id, keyCode, store) {
   return true
 }
 
+export function toggleClassesActive(id, index) {
+  const els = document.querySelectorAll(id);
+  els.forEach((el, ind) => {
+    if (ind !== index) {
+      el.classList.toggle('active');
+      el.style.CursorPointer = 'none'
+    }
+  })
+}
+
 export function indicatePressedCapsLock() {
   const el = document.querySelector('#CapsLock')
   const LocStorage = storage('keyBoard-state')

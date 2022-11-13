@@ -37,30 +37,6 @@ export function windowParametrs() {
   }
 }
 
-// export function windowParametrs() {
-//   if (window.innerWidth >= 920) {
-//     return {
-//       monicWidth: '860px',
-//       monicHeight: '368px',
-//       textareaWidth: '830px',
-//       textareaHeight: '277px',
-//     }
-//   } if (window.innerWidth < 920 && window.innerWidth >= 720) {
-//     return {
-//       monicWidth: '688px',
-//       monicHeight: '368px',
-//       textareaWidth: '660px',
-//       textareaHeight: '277px',
-//     }
-//   }
-//   return {
-//     monicWidth: '452px',
-//     monicHeight: '368px',
-//     textareaWidth: '425px',
-//     textareaHeight: '277px',
-//   }
-// }
-
 export function css(styles = {}) {
   const cssStylesString = Object.entries(styles).map(([key, value]) => `${key}:${value}`).join(';')
   return `${cssStylesString}`

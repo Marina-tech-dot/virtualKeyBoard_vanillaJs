@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { KeyBoardComponent } from '../../core/KeyBoardComponent';
 import { createMonitor } from './monitorComponent.template';
 import * as actions from '../../redux/actions';
@@ -6,7 +5,11 @@ import { $ } from '../../core/dom';
 import {
   addClickedKey, cursorPositionAndTextarea, lightPressedKey, setCaretToPos,
 } from './monitor.functions';
-import { fireCapsLangShift, itIsLang } from '../klava/klava.functions';
+import {
+  fireCapsLangShift,
+  itIsLang,
+  playSound,
+} from '../klava/klava.functions';
 import { functionalKeyValue, indicatePressedCapsLock } from '../klava/klava.functions.utils';
 import { windowParametrs } from '../../core/utils';
 
@@ -36,12 +39,10 @@ export class MonitorComponent extends KeyBoardComponent {
     this.$on('klava:clickSimbol', (text) => {
       this.textarea.focus()
       this.pressedWrittenKey(text)
+      this.textarea.scrollTop = this.textarea.scrollHeight;
       this.textarea.focus()
     })
-    this.$on('klava:clickUnwrittenSimbol', () => {
-      this.textarea.focus()
-      this.textarea.scrollTop = this.textarea.scrollHeight
-    })
+
     this.$on('klava:clickBackspace', (newTextarea) => {
       this.textarea.focus()
       this.addToLS({ Textarea: newTextarea.Textarea })
@@ -66,8 +67,14 @@ export class MonitorComponent extends KeyBoardComponent {
       });
       indicatePressedCapsLock()
     })
-    this.$on('klava:microIsOn', () => {
-      this.addToLS({ Textarea: this.textarea.value })
+    this.$on('klava:microIsOff', () => {
+      this.addToLS({ Textarea: this.textarea.value });
+      const $span = $('.interim__result');
+      $span.insertText('')
+      setTimeout(() => {
+        this.textarea.scrollTop = this.textarea.scrollHeight;
+        this.textarea.focus();
+      }, 300);
     })
     this.$on('klava:ArrowLeftIsOn', () => {
       this.textarea.focus()
@@ -107,13 +114,18 @@ export class MonitorComponent extends KeyBoardComponent {
       const klavaHider = $(event.target)
       klavaHider.toggleClass(['inactive'])
       this.$emit('monic:clickKlavaHider')
-      this.textarea.focus()
+      this.textarea.focus();
+      setTimeout(() => {
+        this.textarea.scrollTop = this.textarea.scrollHeight + 1000;
+      }, 400);
     }
   }
 
   onKeydown(event) {
     this.$emit('monic:pressedKey')
     const pressedKey = event.key
+    playSound(event, this.store)
+
     if (pressedKey === 'Tab') {
       event.preventDefault()
       document.onkeyup = () => {

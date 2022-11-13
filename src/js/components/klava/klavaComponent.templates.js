@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 import { $ } from '../../core/dom'
 import { keyBoardRows } from './klavaKeys'
 import { KlavaRowElIterator } from './KlavaRowElIteratror'
@@ -18,6 +17,7 @@ export function createKeyBoard($root) {
           $rootRow.append($rowElHTML)
         } else {
           const iterator = new KlavaRowElIterator(el.keboardRowsValues)
+          // eslint-disable-next-line no-restricted-syntax
           for (const standartKeys of iterator) {
             $rootRow.$el.insertAdjacentHTML('beforeend', standartKeys)
           }
